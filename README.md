@@ -7,10 +7,12 @@ sudo apt-get install maven
 Add Environment variable like this
 ```
 export GOOGLE_APPLICATION_CREDENTIALS=/path/to/yourCredentialJson.json
+export BOT_ID=botYourBotID
+export CHAT_ID=yourChatID
 ```
 Build and run application like this
 ```
 mvn clean package
-java -jar target/label-1.0-SNAPSHOT.jar ~/path/to/yourImage.jpg
+java -jar target/label-1.0-SNAPSHOT.jar ~path/to/yourImage.jpg
 ```
 profit
