@@ -62,6 +62,10 @@ public class LabelApp {
      */
     private static final String APPLICATION_NAME = "Google-VisionLabelSample/1.0";
 
+    private static final String BOT_ID = System.getenv("BOT_ID");
+
+    private static final String CHAT_ID = System.getenv("CHAT_ID");
+
     private static final int MAX_LABELS = 3;
 
     private static Path pathToImage;
@@ -88,13 +92,13 @@ public class LabelApp {
      * Try to send message with labels and its probabilities to telegram
      */
     private static void sendMessageToTelegramBot(List<EntityAnnotation> labels) throws IOException {
-        String urlSendMessage = "https://api.telegram.org/<botID>/sendMessage";
+        String urlSendMessage = "https://api.telegram.org/" + BOT_ID + "/sendMessage";
 
         CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(urlSendMessage);
-        List <NameValuePair> nvps = new ArrayList<NameValuePair>();
+        List <NameValuePair> nvps = new ArrayList<>();
         nvps.add(new BasicNameValuePair("text", buildMessage(labels)));
-        nvps.add(new BasicNameValuePair("chat_id", "<chatID>"));
+        nvps.add(new BasicNameValuePair("chat_id", CHAT_ID));
         httpPost.setEntity(new UrlEncodedFormEntity(nvps));
         CloseableHttpResponse response = httpclient.execute(httpPost);
 
@@ -111,10 +115,10 @@ public class LabelApp {
         File file = new File(pathToImage.toUri());
         HttpEntity httpEntity = MultipartEntityBuilder.create()
                 .addBinaryBody("photo", file, ContentType.create("image/jpeg"), file.getName())
-                .addTextBody("chat_id", "<chatID>")
+                .addTextBody("chat_id", CHAT_ID)
                 .build();
 
-        String urlSendPhoto = "https://api.telegram.org/<botID>/sendPhoto";
+        String urlSendPhoto = "https://api.telegram.org/" + BOT_ID + "/sendPhoto";
 
         CloseableHttpClient httpclient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(urlSendPhoto);
